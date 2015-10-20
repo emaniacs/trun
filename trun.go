@@ -48,7 +48,7 @@ func (this *Command) Run(args ...string) error {
 
 	// checking for timeout
 	if this.Timeout < 1 {
-		msg := "Timeout cannot below than 1"
+		msg := "Invalid timeout"
 		this.Code = ERROR
 		this.Message = msg
 		return errors.New(msg)
