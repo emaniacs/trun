@@ -61,6 +61,7 @@ func (this *Command) Run(args ...string) error {
 		return errors.New("Command not found")
 	}
 
+	// TODO: get cmd.StderrPipe
 	var err error
 	done := make(chan bool, 1)
 	go func(){
@@ -77,6 +78,7 @@ func (this *Command) Run(args ...string) error {
 			this.Message = "Error while start"
 		}
 
+		// collect all output
 		in := bufio.NewScanner(stdout)
 		for in.Scan() {
 			this.output = append(this.output, in.Text())
@@ -87,9 +89,12 @@ func (this *Command) Run(args ...string) error {
 	}()
 
 	select {
+	// process finish
 	case <-done:
 		this.Code = DONE
 		return err
+	
+	// timeout
 	case <-time.After(time.Second * time.Duration(this.Timeout)):
 		this.Message = "TIMEOUT"
 		this.Code = TIMEOUT
