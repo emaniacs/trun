@@ -1,21 +1,21 @@
 package trun
 
 import (
-	"os/exec"
-	"time"
 	"bufio"
-	"strings"
 	"errors"
+	"os/exec"
+	"strings"
+	"time"
 )
 
 // Command.Code
 var (
-	DONE = 0
+	DONE    = 0
 	TIMEOUT = 1
-	ERROR = -1
+	ERROR   = -1
 )
 
-type Command struct{
+type Command struct {
 	// output container
 	output []string
 
@@ -65,7 +65,7 @@ func (this *Command) Run(args ...string) error {
 	// TODO: add signal handler
 	var err error
 	done := make(chan bool, 1)
-	go func(){
+	go func() {
 		cmd := exec.Command(path, args...)
 		stdout, errr := cmd.StdoutPipe()
 		if err != nil {
@@ -94,7 +94,7 @@ func (this *Command) Run(args ...string) error {
 	case <-done:
 		this.Code = DONE
 		return err
-	
+
 	// timeout
 	case <-time.After(time.Second * time.Duration(this.Timeout)):
 		this.Message = "TIMEOUT"
@@ -102,4 +102,3 @@ func (this *Command) Run(args ...string) error {
 		return err
 	}
 }
-
