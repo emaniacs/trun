@@ -70,3 +70,65 @@ func TestDoneCommand(t *testing.T) {
 		t.Error("Expected empty message on success DONE command", cmd.Message)
 	}
 }
+
+func TestInvalidArgsCommand(t *testing.T) {
+	cmd := new(Command)
+	cmd.Command = "sh"
+	cmd.Timeout = 2
+	err := cmd.Run("-c", "unknown command on sh")
+
+	if err == nil {
+		t.Error("Expected error got nil", err)
+	}
+
+	// code is DONE because error on args on command
+	if cmd.Code != DONE {
+		t.Error("Code must DONE", cmd.Code)
+	}
+	if cmd.Message != "" {
+		t.Error("Expected empty message on success DONE command", cmd.Message)
+	}
+}
+
+func TestMultipleCommand(t *testing.T) {
+	err1 := make(chan error)
+	cmd1 := new(Command)
+	go func() {
+		cmd1.Command = "sh"
+		cmd1.Timeout = 1
+		err := cmd1.Run("-c", "ping google.com")
+		err1 <- err
+	}()
+
+	err2 := make(chan error)
+	cmd2 := new(Command)
+	go func() {
+		cmd2.Command = "sh"
+		cmd2.Timeout = 1
+		err := cmd2.Run("-c", "ping google.com")
+		err2 <- err
+	}()
+
+	checker := func(name string, err error, cmdo *Command) {
+		if err != nil {
+			t.Error("Expected error got nil", err)
+		}
+
+		if cmdo.Code != TIMEOUT {
+			t.Error("Code must DONE", cmdo.Code)
+		}
+		if cmdo.Message != "TIMEOUT" {
+			t.Error("Expected TIMEOUT message on success TIMEOUT command", cmdo.Message)
+		}
+	}
+
+	for i := 0; i < 2; i++ {
+		select {
+		case err := <-err1:
+			checker("cmd1", err, cmd1)
+		case err := <-err2:
+			checker("cmd2", err, cmd2)
+		}
+	}
+
+}
