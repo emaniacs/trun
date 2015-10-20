@@ -1,13 +1,13 @@
 package main
 
 import (
-	"os"
 	"fmt"
-	"strconv"
 	"github.com/emaniacs/trun"
+	"os"
+	"strconv"
 )
 
-func main(){
+func main() {
 	if len(os.Args) < 3 {
 		fmt.Fprintln(os.Stderr, "Not enough argument.")
 		fmt.Fprintf(os.Stderr, "%s <timeout> command...\n", os.Args[0])
