@@ -132,3 +132,15 @@ func TestMultipleCommand(t *testing.T) {
 	}
 
 }
+
+func CmdRun(){
+	cmd := new(Command)
+	cmd.Command = "uptime"
+	cmd.Timeout = 1
+	cmd.Run()
+}
+func BenchmarkRun1SecondsTimeout(b *testing.B) {
+	for n:=0 ; n<b.N; n++ {
+		CmdRun()
+	}
+}
