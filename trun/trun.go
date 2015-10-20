@@ -62,6 +62,7 @@ func (this *Command) Run(args ...string) error {
 	}
 
 	// TODO: get cmd.StderrPipe
+	// TODO: add signal handler
 	var err error
 	done := make(chan bool, 1)
 	go func(){
