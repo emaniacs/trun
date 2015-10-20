@@ -4,7 +4,7 @@ import (
 	"os"
 	"fmt"
 	"strconv"
-	"github.com/emaniacs/trun/trun"
+	"github.com/emaniacs/trun"
 )
 
 func main(){
