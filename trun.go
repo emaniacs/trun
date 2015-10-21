@@ -38,6 +38,9 @@ func (this *Command) Output() string {
 // run command with args
 // args will passing into exec.Command
 func (this *Command) Run(args ...string) error {
+	// Reset message first
+	this.Message = ""
+
 	// checking for empty command
 	if len(this.Command) < 1 {
 		msg := "Empty command"
