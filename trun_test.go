@@ -133,6 +133,30 @@ func TestMultipleCommand(t *testing.T) {
 
 }
 
+func TestMultipleRunOnOneCommand(t *testing.T) {
+	var err error
+	cmd := new(Command)
+	cmd.Command = "sh"
+	cmd.Timeout = 2
+
+	// run timeout command
+	err = cmd.Run("-c", "sleep 3")
+
+	// run another command (done)
+	err = cmd.Run("-c", "sleep 1")
+
+	if err != nil {
+		t.Error("Expected error got nil", err)
+	}
+
+	if cmd.Code != DONE {
+		t.Error("Code must DONE", cmd.Code)
+	}
+	if cmd.Message != "" {
+		t.Error("Expected empty message on success DONE command", cmd.Message)
+	}
+}
+
 func CmdRun(){
 	cmd := new(Command)
 	cmd.Command = "uptime"
