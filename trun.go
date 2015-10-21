@@ -47,6 +47,7 @@ func (this *Command) Run(args ...string) error {
 	}
 
 	// checking for timeout
+	// TODO: timeout using seconds, minute or hour
 	if this.Timeout < 1 {
 		msg := "Invalid timeout"
 		this.Code = ERROR
