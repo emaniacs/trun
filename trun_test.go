@@ -57,7 +57,7 @@ func TestTimeoutCommand(t *testing.T) {
 func TestDoneCommand(t *testing.T) {
 	cmd := new(Command)
 	cmd.Command = "sh"
-	cmd.Timeout = 2
+	cmd.Timeout = 3
 	err := cmd.Run("-c", "ping -c 2 google.com")
 
 	if err != nil {
