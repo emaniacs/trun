@@ -41,7 +41,7 @@ func TestTimeoutCommand(t *testing.T) {
 	cmd := new(Command)
 	cmd.Command = "sh"
 	cmd.Timeout = 1
-	err := cmd.Run("-c", "ping google.com")
+	err := cmd.Run("-c", "sleep 3")
 
 	if err != nil {
 		t.Error("Expected err nil", err)
@@ -58,7 +58,7 @@ func TestDoneCommand(t *testing.T) {
 	cmd := new(Command)
 	cmd.Command = "sh"
 	cmd.Timeout = 3
-	err := cmd.Run("-c", "ping -c 2 google.com")
+	err := cmd.Run("-c", "sleep 2")
 
 	if err != nil {
 		t.Error("Expected err nil", err)
@@ -96,7 +96,7 @@ func TestMultipleCommand(t *testing.T) {
 	go func() {
 		cmd1.Command = "sh"
 		cmd1.Timeout = 1
-		err := cmd1.Run("-c", "ping google.com")
+		err := cmd1.Run("-c", "sleep 1")
 		err1 <- err
 	}()
 
@@ -105,7 +105,7 @@ func TestMultipleCommand(t *testing.T) {
 	go func() {
 		cmd2.Command = "sh"
 		cmd2.Timeout = 1
-		err := cmd2.Run("-c", "ping google.com")
+		err := cmd2.Run("-c", "sleep 1")
 		err2 <- err
 	}()
 
